@@ -1,80 +1,171 @@
-// TODO adapt to reflect the form for bread
+// Helpers
+const number = { type: "number"};
+const boolean = { type: "boolean" };
+const string = { type: "string" };
+const showIfUseProteinTarget = {
+  effect: "SHOW",
+  condition: {
+    scope: "#/properties/useProteinTarget",
+    schema: { const: true },
+  },
+};
 
 const schema = {
   type: "object",
   properties: {
-    name: {
-      type: "string",
-      minLength: 3,
-      description: "Please enter your name",
-    },
-    vegetarian: { type: "boolean" },
-    birthDate: { type: "string", format: "date" },
-    nationality: {
-      type: "string",
-      enum: ["DE", "IT", "JP", "US", "RU", "Other"],
-    },
-    personalData: {
+    totalWeight: number,
+    hydration: number,
+    starterPerc: number,
+    saltPerc: number,
+    useProteinTarget: boolean,
+    proteinTarget: {
       type: "object",
       properties: {
-        age: { type: "integer", description: "Please enter your age." },
-        height: { type: "number" },
-        drivingSkill: { type: "number", maximum: 10, minimum: 1, default: 7 },
+        target: number,
+        gluten: number,
       },
-      required: ["age", "height"],
     },
-    occupation: { type: "string" },
-    postalCode: { type: "string", maxLength: 5 },
+    starter: {
+      type: "object",
+      properties: {
+        name: string,
+        hydration: number,
+        protein: number,
+      },
+    },
+    mainFlour: {
+      type: "object",
+      properties: {
+        name: string,
+        protein: number,
+      },
+    },
+    flours: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          name: string,
+          protein: number,
+          amount: number,
+        },
+      },
+    },
   },
-  required: ["occupation", "nationality"],
+  required: ["totalWeight", "hydration", "starterPerc", "saltPerc"],
 };
+
 const uischema = {
   type: "VerticalLayout",
   elements: [
     {
-      type: "HorizontalLayout",
+      type: "Control",
+      scope: "#/properties/totalWeight",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/hydration",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/starterPerc",
+      label: "Starter Percentage",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/saltPerc",
+      label: "Salt Percentage",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/useProteinTarget",
+    },
+    {
+      type: "Group",
+      label: "Gluten",
+      rule: showIfUseProteinTarget,
       elements: [
-        { type: "Control", scope: "#/properties/name" },
         {
           type: "Control",
-          scope: "#/properties/personalData/properties/age",
+          scope: "#/properties/proteinTarget/properties/target",
         },
-        { type: "Control", scope: "#/properties/birthDate" },
+        {
+          type: "Control",
+          scope: "#/properties/proteinTarget/properties/gluten",
+        },
       ],
     },
-    { type: "Label", text: "Additional Information" },
     {
-      type: "HorizontalLayout",
+      type: "Group",
+      label: "Starter",
       elements: [
         {
           type: "Control",
-          scope: "#/properties/personalData/properties/height",
+          scope: "#/properties/starter/properties/name",
         },
-        { type: "Control", scope: "#/properties/nationality" },
         {
           type: "Control",
-          scope: "#/properties/occupation",
-          suggestion: [
-            "Accountant",
-            "Engineer",
-            "Freelancer",
-            "Journalism",
-            "Physician",
-            "Student",
-            "Teacher",
-            "Other",
-          ],
+          scope: "#/properties/starter/properties/hydration",
+        },
+        {
+          type: "Control",
+          scope: "#/properties/starter/properties/protein",
+          rule: showIfUseProteinTarget,
         },
       ],
+    },
+    {
+      type: "Group",
+      label: "Main Flour",
+      elements: [
+        {
+          type: "Control",
+          scope: "#/properties/mainFlour/properties/name",
+        },
+        {
+          type: "Control",
+          scope: "#/properties/mainFlour/properties/protein",
+          rule: showIfUseProteinTarget,
+        },
+      ],
+    },
+    {
+      // TODO hide protein if useProteinTarget is false
+      type: "Control",
+      scope: "#/properties/flours",
+      options: {
+        showSortButtons: true,
+      },
     },
   ],
 };
-const initialData = {
-  name: "John Doe",
-  vegetarian: false,
-  birthDate: "1985-06-02",
-  personalData: { age: 34 },
-  postalCode: "12345",
-};
 
+const initialData = {
+  // Basics
+  totalWeight: 1000,
+  hydration: 65,
+  starterPerc: 20,
+  saltPerc: 2,
+
+  // Gluten
+  useProteinTarget: false,
+  proteinTarget: {
+    target: 15,
+    gluten: 80,
+  },
+
+  // Starter
+  starter: {
+    name: "yeasti",
+    hydration: 100,
+    protein: 11,
+  },
+
+  // Flours
+  mainFlour: {
+    name: "550",
+    protein: 10.6,
+  },
+  flours: [],
+};
 export { schema, uischema, initialData };
