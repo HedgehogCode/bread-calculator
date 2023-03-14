@@ -1,3 +1,5 @@
+import { Bread } from "./types";
+
 // Helpers
 const number = { type: "number"};
 const boolean = { type: "boolean" };
@@ -167,5 +169,5 @@ const initialData = {
     protein: 10.6,
   },
   flours: [],
-};
+} as Bread;
 export { schema, uischema, initialData };
