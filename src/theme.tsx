@@ -1,10 +1,8 @@
+import { PaletteMode } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
-// A custom theme for this app
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
-
-export default theme;
+export default function getTheme(mode: PaletteMode) {
+  return createTheme({
+    palette: { mode },
+  });
+}
