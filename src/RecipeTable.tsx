@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+
 import { Recipe } from "./types";
 
 interface RecipeTableProps {
@@ -46,7 +47,8 @@ export default function RecipeTable(props: RecipeTableProps) {
           )}
           {props.recipe.flour.map((flour) => {
             return (
-              <TableRow>
+              // TODO make sure the name is always unique
+              <TableRow key={flour[0].name}>
                 <TableCell>Flour - {flour[0].name}</TableCell>
                 <TableCell>{flour[1].toFixed(1)}</TableCell>
               </TableRow>

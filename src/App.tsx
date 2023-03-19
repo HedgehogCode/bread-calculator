@@ -1,35 +1,31 @@
-import { createContext, useMemo, useState } from "react";
 import { ThemeProvider } from "@emotion/react";
 import {
-  CssBaseline,
-  PaletteMode,
-  Container,
-  Paper,
-  Typography,
-  AppBar,
-  Toolbar,
-} from "@mui/material";
-
+  materialCells,
+  materialRenderers,
+} from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import {
-  materialRenderers,
-  materialCells,
-} from "@jsonforms/material-renderers";
+  AppBar,
+  Container,
+  CssBaseline,
+  PaletteMode,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { createContext, useMemo, useState } from "react";
 
-import { schema, uischema, initialData } from "./breadform";
-import RecipeTable from "./RecipeTable";
-import compute from "./compute";
-import getTheme from "./theme";
+import { initialData, schema, uischema } from "./breadform";
 import ColorModeSwitcher from "./components/ColorModeSwitcher";
+import compute from "./compute";
+import RecipeTable from "./RecipeTable";
+import getTheme from "./theme";
 
-export const ColorModeContext = createContext({
-  mode: "light" as PaletteMode,
-  toggleColorMode: () => {},
-});
+export const ColorModeContext = createContext({});
 
 function App() {
   // Color mode
-  const [mode, setMode] = useState<PaletteMode>("light");
+  const [mode, setMode] = useState<PaletteMode>("dark");
   const colorMode = useMemo(
     () => ({
       mode,
@@ -61,14 +57,14 @@ function App() {
           </Toolbar>
         </AppBar>
         <Container maxWidth="sm" sx={{ my: 4 }}>
-            <JsonForms
-              schema={schema}
-              uischema={uischema}
-              data={data}
-              renderers={materialRenderers}
-              cells={materialCells}
-              onChange={({ data, errors }) => setData(data)}
-            />
+          <JsonForms
+            schema={schema}
+            uischema={uischema}
+            data={data}
+            renderers={materialRenderers}
+            cells={materialCells}
+            onChange={({ data, errors }) => setData(data)}
+          />
           <Paper sx={{ p: 4, my: 4 }} elevation={5}>
             <Typography variant="h5" gutterBottom>
               Recipe

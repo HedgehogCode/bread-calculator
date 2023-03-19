@@ -1,7 +1,7 @@
 import { Bread } from "./types";
 
 // Helpers
-const number = { type: "number"};
+const number = { type: "number" };
 const boolean = { type: "boolean" };
 const string = { type: "string" };
 const showIfUseProteinTarget = {
@@ -54,7 +54,13 @@ const schema = {
       },
     },
   },
-  required: ["totalWeight", "hydration", "starterPerc", "saltPerc"],
+  required: [
+    "totalWeight",
+    "hydration",
+    "starterPerc",
+    "saltPerc",
+    "useProteinTarget",
+  ],
 };
 
 const uischema = {
@@ -170,4 +176,4 @@ const initialData = {
   },
   flours: [],
 } as Bread;
-export { schema, uischema, initialData };
+export { initialData, schema, uischema };

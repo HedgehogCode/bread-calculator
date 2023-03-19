@@ -1,5 +1,6 @@
-import type { Bread, Flour, Recipe, Starter } from "./types";
 import linear from "linear-solve";
+
+import type { Bread, Flour, Recipe, Starter } from "./types";
 
 function constArray(len: number, val: number): number[] {
   return Array(len).fill(val);
