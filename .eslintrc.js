@@ -3,7 +3,7 @@ module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["./tsconfig.json"],
+    project: ["./tsconfig.json", "tsconfig.node.json"],
   },
   settings: {
     react: {
