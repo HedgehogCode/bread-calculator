@@ -1,19 +1,23 @@
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { IconButton } from "@mui/material";
-import { useContext } from "react";
+import { IconButton, PaletteMode } from "@mui/material";
 
-import { ColorModeContext } from "../App";
+interface ColorModeSwitcherProps {
+  mode: PaletteMode;
+  onToggle: (mode: PaletteMode) => void;
+}
 
-export default function ColorModeSwitcher() {
-  const colorMode = useContext(ColorModeContext);
+export default function ColorModeSwitcher({
+  mode,
+  onToggle,
+}: ColorModeSwitcherProps) {
   return (
     <IconButton
       sx={{ ml: 1 }}
-      onClick={colorMode.toggleColorMode}
+      onClick={() => onToggle(mode === "dark" ? "light" : "dark")}
       color="inherit"
     >
-      {colorMode.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+      {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
     </IconButton>
   );
 }

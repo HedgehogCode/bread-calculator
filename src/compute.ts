@@ -1,9 +1,10 @@
 import linear from "linear-solve";
+import { err, ok, Result } from "neverthrow";
 
 import type { Bread, Flour, Recipe, Starter } from "./types";
 
-function constArray(len: number, val: number): number[] {
-  return Array(len).fill(val);
+function constArray(len: number, val: number) {
+  return Array(len).fill(val) as number[];
 }
 
 function starterFlour(b: Bread) {
@@ -28,7 +29,9 @@ function pushIfProteinTarget(b: Bread, a: number[], x: number) {
 // ================= Conditions
 
 function weightCondA(b: Bread) {
-  return Array(numFlours(b) + (b.useProteinTarget ? 4 : 3)).fill(1.0);
+  return Array(numFlours(b) + (b.useProteinTarget ? 4 : 3)).fill(
+    1.0
+  ) as number[];
 }
 
 function weightCondB(b: Bread) {
@@ -100,7 +103,7 @@ function flourCondB() {
   return 0.0;
 }
 
-export default function compute(params: Bread): Recipe {
+export default function compute(params: Bread): Result<Recipe, string> {
   // Variables:
   // x_0: Water
   // x_1: Salt
@@ -109,8 +112,8 @@ export default function compute(params: Bread): Recipe {
   // x_4: Main flour
   // x_(5..n): Additional flours
 
-  const a = [];
-  const b = [];
+  const a: number[][] = [];
+  const b: number[] = [];
 
   // Weight
   a.push(weightCondA(params));
@@ -141,8 +144,12 @@ export default function compute(params: Bread): Recipe {
   }
 
   // Solve the equation system
-  // TODO no any
-  const x = linear.solve(a, b);
+  let x: number[];
+  try {
+    x = linear.solve(a, b);
+  } catch (e) {
+    return err("No recipe can fulfill the given definition.");
+  }
 
   // Construct the recipe
   const water = x[0];
@@ -151,7 +158,8 @@ export default function compute(params: Bread): Recipe {
 
   if (params.useProteinTarget) {
     const mainFlour: [Flour, number] = [params.mainFlour, x[4]];
-    return {
+
+    return ok({
       water: water,
       salt: salt,
       starter: starter,
@@ -159,16 +167,16 @@ export default function compute(params: Bread): Recipe {
       flour: [mainFlour].concat(
         params.flours.map((f, i) => [f.flour, x[i + 5]])
       ),
-    };
+    });
   } else {
     const mainFlour: [Flour, number] = [params.mainFlour, x[3]];
-    return {
+    return ok({
       water: x[0],
       salt: x[1],
       starter: starter,
       flour: [mainFlour].concat(
         params.flours.map((f, i) => [f.flour, x[i + 4]])
       ),
-    };
+    });
   }
 }
