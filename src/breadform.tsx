@@ -1,58 +1,63 @@
-import { Bread } from "./types";
+import { createAjv, JsonSchema, Layout } from "@jsonforms/core";
+import { JSONSchemaType } from "ajv";
 
-// Helpers
-const number = { type: "number" };
-const boolean = { type: "boolean" };
-const string = { type: "string" };
-const showIfUseProteinTarget = {
-  effect: "SHOW",
-  condition: {
-    scope: "#/properties/useProteinTarget",
-    schema: { const: true },
+import { Bread, Flour, FlourAndAmount, ProteinTarget, Starter } from "./types";
+
+// --- JSON SCHEMA
+
+const proteinTargetSchema: JSONSchemaType<ProteinTarget> = {
+  type: "object",
+  properties: {
+    target: { type: "number" },
+    gluten: { type: "number" },
+  },
+  required: ["target", "gluten"],
+};
+
+const starterSchema: JSONSchemaType<Starter> = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    hydration: { type: "number" },
+    protein: { type: "number" },
+  },
+  required: ["name", "hydration", "protein"],
+};
+
+const mainFlourSchema: JSONSchemaType<Flour> = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    protein: { type: "number" },
+  },
+  required: ["name"],
+};
+
+const floursSchema: JSONSchemaType<FlourAndAmount[]> = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      name: { type: "string", default: "flour" },
+      protein: { type: "number", default: 10 },
+      amount: { type: "number", default: 20 },
+    },
+    required: ["name", "protein", "amount"],
   },
 };
 
-const schema = {
+const schema: JSONSchemaType<Bread> = {
   type: "object",
   properties: {
-    totalWeight: number,
-    hydration: number,
-    starterPerc: number,
-    saltPerc: number,
-    useProteinTarget: boolean,
-    proteinTarget: {
-      type: "object",
-      properties: {
-        target: number,
-        gluten: number,
-      },
-    },
-    starter: {
-      type: "object",
-      properties: {
-        name: string,
-        hydration: number,
-        protein: number,
-      },
-    },
-    mainFlour: {
-      type: "object",
-      properties: {
-        name: string,
-        protein: number,
-      },
-    },
-    flours: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: string,
-          protein: number,
-          amount: number,
-        },
-      },
-    },
+    totalWeight: { type: "number" },
+    hydration: { type: "number" },
+    starterPerc: { type: "number" },
+    saltPerc: { type: "number" },
+    useProteinTarget: { type: "boolean" },
+    proteinTarget: proteinTargetSchema,
+    starter: starterSchema,
+    mainFlour: mainFlourSchema,
+    flours: floursSchema,
   },
   required: [
     "totalWeight",
@@ -60,10 +65,23 @@ const schema = {
     "starterPerc",
     "saltPerc",
     "useProteinTarget",
+    "proteinTarget",
+    "starter",
+    "mainFlour",
+    "flours",
   ],
 };
 
-const uischema = {
+// --- UI SCHEMA
+
+const showIfUseProteinTarget = {
+  effect: "SHOW",
+  condition: {
+    scope: "#/properties/useProteinTarget",
+    schema: { const: true },
+  },
+};
+const uischema: Layout = {
   type: "VerticalLayout",
   elements: [
     {
@@ -148,7 +166,7 @@ const uischema = {
   ],
 };
 
-const initialData = {
+const initialData: Bread = {
   // Basics
   totalWeight: 1000,
   hydration: 65,
@@ -175,5 +193,8 @@ const initialData = {
     protein: 10.6,
   },
   flours: [],
-} as Bread;
-export { initialData, schema, uischema };
+};
+
+const handleDefaultsAjv = createAjv({ useDefaults: true });
+
+export { handleDefaultsAjv, initialData, schema as JsonSchema, uischema };

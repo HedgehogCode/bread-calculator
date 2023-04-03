@@ -3,8 +3,7 @@ export interface Flour {
   protein: number;
 }
 
-export interface FlourAndAmount {
-  flour: Flour;
+export interface FlourAndAmount extends Flour {
   amount: number;
 }
 
@@ -35,9 +34,9 @@ export interface ProteinTarget {
 export interface Recipe {
   water: number;
   salt: number;
-  starter: [Starter, number];
+  starter: { name: string; amount: number };
   gluten?: number;
-  flour: [Flour, number][];
+  flour: { name: string; amount: number }[];
 }
 
 export interface ComputationError {

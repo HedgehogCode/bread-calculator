@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 
-import { initialData, schema, uischema } from "./breadform";
+import { handleDefaultsAjv, initialData, schema, uischema } from "./breadform";
 import ColorModeSwitcher from "./components/ColorModeSwitcher";
 import compute from "./compute";
 import RecipeTable from "./RecipeTable";
@@ -30,6 +30,9 @@ function App() {
 
   // Data
   const [data, setData] = useState(initialData);
+
+  // Errors
+  const [errors, setErrors] = useState<any>("no errors");
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,8 +55,14 @@ function App() {
           data={data}
           renderers={materialRenderers}
           cells={materialCells}
-          onChange={({ data, errors }) => setData(data as Bread)}
+          onChange={({ data, errors }) => {
+            setData(data as Bread);
+            setErrors(errors);
+          }}
+          ajv={handleDefaultsAjv}
         />
+        <Alert severity="error">{JSON.stringify(errors)}</Alert>
+        <Alert severity="info">{JSON.stringify(data)}</Alert>
         <Paper sx={{ p: 4, my: 4 }} elevation={5}>
           {compute(data).match(
             (recipe) => {

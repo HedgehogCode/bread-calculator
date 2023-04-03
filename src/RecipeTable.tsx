@@ -14,7 +14,8 @@ interface RecipeTableProps {
   recipe: Recipe;
 }
 
-export default function RecipeTable(props: RecipeTableProps) {
+export default function RecipeTable({ recipe }: RecipeTableProps) {
+  // return <span>{JSON.stringify(props.recipe)}</span>;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="recipe">
@@ -27,30 +28,30 @@ export default function RecipeTable(props: RecipeTableProps) {
         <TableBody>
           <TableRow>
             <TableCell>Water</TableCell>
-            <TableCell>{props.recipe.water.toFixed(1)} g</TableCell>
+            <TableCell>{recipe.water.toFixed(1)} g</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Salt</TableCell>
-            <TableCell>{props.recipe.salt.toFixed(1)} g</TableCell>
+            <TableCell>{recipe.salt.toFixed(1)} g</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Starter - {props.recipe.starter[0].name}</TableCell>
-            <TableCell>{props.recipe.starter[1].toFixed(1)} g</TableCell>
+            <TableCell>Starter - {recipe.starter.name}</TableCell>
+            <TableCell>{recipe.starter.amount.toFixed(1)} g</TableCell>
           </TableRow>
-          {props.recipe.gluten ? (
+          {recipe.gluten ? (
             <TableRow>
               <TableCell>Gluten</TableCell>
-              <TableCell>{props.recipe.gluten.toFixed(1)} g</TableCell>
+              <TableCell>{recipe.gluten.toFixed(1)} g</TableCell>
             </TableRow>
           ) : (
             <></>
           )}
-          {props.recipe.flour.map((flour) => {
+          {recipe.flour.map((flour) => {
             return (
               // TODO make sure the name is always unique
-              <TableRow key={flour[0].name}>
-                <TableCell>Flour - {flour[0].name}</TableCell>
-                <TableCell>{flour[1].toFixed(1)}</TableCell>
+              <TableRow key={flour.name}>
+                <TableCell>Flour - {flour.name}</TableCell>
+                <TableCell>{flour.amount.toFixed(1)}</TableCell>
               </TableRow>
             );
           })}

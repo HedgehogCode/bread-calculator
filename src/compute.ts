@@ -1,7 +1,7 @@
 import linear from "linear-solve";
 import { err, ok, Result } from "neverthrow";
 
-import type { Bread, Flour, Recipe, Starter } from "./types";
+import type { Bread, Recipe } from "./types";
 
 function constArray(len: number, val: number) {
   return Array(len).fill(val) as number[];
@@ -83,7 +83,7 @@ function proteinCondA(b: Bread) {
     (b.starter.protein - b.proteinTarget.target) * starterFlour(b),
     b.proteinTarget.gluten - b.proteinTarget.target,
     b.mainFlour.protein - b.proteinTarget.target,
-  ].concat(b.flours.map((f) => f.flour.protein - b.proteinTarget.target));
+  ].concat(b.flours.map((f) => f.protein - b.proteinTarget.target));
 }
 
 function proteinCondB() {
@@ -111,6 +111,7 @@ export default function compute(params: Bread): Result<Recipe, string> {
   // x_3: Gluten
   // x_4: Main flour
   // x_(5..n): Additional flours
+  console.log("Computing for ", params);
 
   const a: number[][] = [];
   const b: number[] = [];
@@ -154,28 +155,27 @@ export default function compute(params: Bread): Result<Recipe, string> {
   // Construct the recipe
   const water = x[0];
   const salt = x[1];
-  const starter: [Starter, number] = [params.starter, x[2]];
+  const starter = { name: params.starter.name, amount: x[2] };
 
   if (params.useProteinTarget) {
-    const mainFlour: [Flour, number] = [params.mainFlour, x[4]];
-
+    const mainFlour = { name: params.mainFlour.name, amount: x[4] };
     return ok({
       water: water,
       salt: salt,
       starter: starter,
       gluten: x[3],
       flour: [mainFlour].concat(
-        params.flours.map((f, i) => [f.flour, x[i + 5]])
+        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 5] }))
       ),
     });
   } else {
-    const mainFlour: [Flour, number] = [params.mainFlour, x[3]];
+    const mainFlour = { name: params.mainFlour.name, amount: x[3] };
     return ok({
       water: x[0],
       salt: x[1],
       starter: starter,
       flour: [mainFlour].concat(
-        params.flours.map((f, i) => [f.flour, x[i + 4]])
+        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 4] }))
       ),
     });
   }
