@@ -111,7 +111,6 @@ export default function compute(params: Bread): Result<Recipe, string> {
   // x_3: Gluten
   // x_4: Main flour
   // x_(5..n): Additional flours
-  console.log("Computing for ", params);
 
   const a: number[][] = [];
   const b: number[] = [];

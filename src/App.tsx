@@ -1,10 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
 import {
-  materialCells,
-  materialRenderers,
-} from "@jsonforms/material-renderers";
-import { JsonForms } from "@jsonforms/react";
-import {
   Alert,
   AppBar,
   Container,
@@ -16,12 +11,12 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 
-import { handleDefaultsAjv, initialData, schema, uischema } from "./breadform";
+import BreadForm from "./components/BreadForm";
 import ColorModeSwitcher from "./components/ColorModeSwitcher";
+import RecipeTable from "./components/RecipeTable";
 import compute from "./compute";
-import RecipeTable from "./RecipeTable";
+import initialData from "./initialData";
 import getTheme from "./theme";
-import { Bread } from "./types";
 
 function App() {
   // Color mode
@@ -30,9 +25,6 @@ function App() {
 
   // Data
   const [data, setData] = useState(initialData);
-
-  // Errors
-  const [errors, setErrors] = useState<any>("no errors");
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,20 +41,8 @@ function App() {
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm" sx={{ my: 4 }}>
-        <JsonForms
-          schema={schema}
-          uischema={uischema}
-          data={data}
-          renderers={materialRenderers}
-          cells={materialCells}
-          onChange={({ data, errors }) => {
-            setData(data as Bread);
-            setErrors(errors);
-          }}
-          ajv={handleDefaultsAjv}
-        />
-        <Alert severity="error">{JSON.stringify(errors)}</Alert>
-        <Alert severity="info">{JSON.stringify(data)}</Alert>
+        <BreadForm onChange={setData} />
+        {/* <Alert severity="info">{JSON.stringify(data, null, 2)}</Alert> */}
         <Paper sx={{ p: 4, my: 4 }} elevation={5}>
           {compute(data).match(
             (recipe) => {

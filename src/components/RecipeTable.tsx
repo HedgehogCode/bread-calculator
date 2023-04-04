@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-import { Recipe } from "./types";
+import { Recipe } from "../types";
 
 interface RecipeTableProps {
   recipe: Recipe;
