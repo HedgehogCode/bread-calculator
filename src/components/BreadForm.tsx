@@ -1,3 +1,11 @@
+import { Add, Delete } from "@mui/icons-material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
 import { Field, FieldArray, Form, Formik, useFormikContext } from "formik";
 import { Checkbox, TextField } from "formik-mui";
 import debounce from "just-debounce-it";
@@ -6,16 +14,6 @@ import { array, boolean, number, object, ObjectSchema, string } from "yup";
 
 import initialData from "../initialData";
 import { Bread } from "../types";
-import {
-  Alert,
-  Box,
-  Button,
-  FormControlLabel,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import { Add, Delete } from "@mui/icons-material";
-import { err } from "neverthrow";
 
 const AutoSave = () => {
   const debounceMs = 100;
@@ -219,7 +217,7 @@ export default function BreadForm({ onChange }: BreadFormProps) {
             <></>
           )}
           <FieldArray name="flours">
-            {({ insert, remove, push }) => (
+            {({ remove, push }) => (
               // TODO do I need this div?
               <div>
                 {values.flours.length > 0 &&
