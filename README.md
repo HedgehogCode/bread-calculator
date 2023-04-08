@@ -18,6 +18,8 @@
 
 ## Roadmap
 
+- [ ] Add licence
+- [ ] Improve tests
 - [ ] Improve `README.md` (Maybe use [othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template))
   - [ ] More badges
 - [ ] Fix layout/styling
