@@ -35,7 +35,6 @@ interface BreadFormProps {
 }
 
 export default function BreadForm({ onChange }: BreadFormProps) {
-  // TODO bind to the typescript type
   const validationSchema: ObjectSchema<Bread> = object({
     totalWeight: number().required().min(0, "Must not be negative"),
     hydration: number().required().min(0),
