@@ -51,7 +51,7 @@ export default function RecipeTable({ recipe }: RecipeTableProps) {
               // TODO make sure the name is always unique
               <TableRow key={flour.name}>
                 <TableCell>Flour - {flour.name}</TableCell>
-                <TableCell>{flour.amount.toFixed(1)}</TableCell>
+                <TableCell>{flour.amount.toFixed(1)} g</TableCell>
               </TableRow>
             );
           })}
