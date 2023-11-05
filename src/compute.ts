@@ -30,7 +30,7 @@ function pushIfProteinTarget(b: Bread, a: number[], x: number) {
 
 function weightCondA(b: Bread) {
   return Array(numFlours(b) + (b.useProteinTarget ? 4 : 3)).fill(
-    1.0
+    1.0,
   ) as number[];
 }
 
@@ -164,7 +164,7 @@ export default function compute(params: Bread): Result<Recipe, string> {
       starter: starter,
       gluten: x[3],
       flour: [mainFlour].concat(
-        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 5] }))
+        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 5] })),
       ),
     });
   } else {
@@ -174,7 +174,7 @@ export default function compute(params: Bread): Result<Recipe, string> {
       salt: x[1],
       starter: starter,
       flour: [mainFlour].concat(
-        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 4] }))
+        params.flours.map((f, i) => ({ name: f.name, amount: x[i + 4] })),
       ),
     });
   }

@@ -1,6 +1,5 @@
 [![codecov](https://codecov.io/gh/HedgehogCode/bread-calculator/branch/main/graph/badge.svg?token=5KFUPP6SB2)](https://codecov.io/gh/HedgehogCode/bread-calculator)
 
-
 <br />
 <div align="center">
   <a href="https://github.com/HedgehogCode/bread-calculator">

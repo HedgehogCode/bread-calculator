@@ -20,7 +20,7 @@ const AutoSave = () => {
   const formik = useFormikContext();
   const debouncedSubmit = useCallback(
     debounce(() => formik.submitForm(), debounceMs),
-    [debounceMs, formik.submitForm]
+    [debounceMs, formik.submitForm],
   );
 
   useEffect(() => {
@@ -59,13 +59,13 @@ export default function BreadForm({ onChange }: BreadFormProps) {
         name: string().required(),
         protein: number().required(),
         amount: number().required().min(0),
-      })
+      }),
     )
       .required()
       .test(
         "uniqueName",
         "Flour names must be unique",
-        (val) => val.length == new Set(val.map((v) => v.name)).size
+        (val) => val.length == new Set(val.map((v) => v.name)).size,
       ),
   });
   return (

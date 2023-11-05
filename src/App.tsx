@@ -57,7 +57,7 @@ function App() {
             },
             (err) => {
               return <Alert severity="error">{err}</Alert>;
-            }
+            },
           )}
         </Paper>
       </Container>

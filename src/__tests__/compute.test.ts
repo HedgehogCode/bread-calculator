@@ -42,7 +42,7 @@ const createBasicBread = () =>
       protein: 10,
     },
     flours: [],
-  } as Bread);
+  }) as Bread;
 
 const addFlours = (bread: Bread) => {
   bread.flours = [
@@ -106,7 +106,7 @@ describe("hydration", () => {
     const recipe = compute(bread)._unsafeUnwrap();
     expect(hydration(recipe, bread.starter.hydration)).toBeCloseTo(
       bread.hydration,
-      5
+      5,
     );
   });
 
@@ -115,7 +115,7 @@ describe("hydration", () => {
     const recipe = compute(bread)._unsafeUnwrap();
     expect(hydration(recipe, bread.starter.hydration)).toBeCloseTo(
       bread.hydration,
-      5
+      5,
     );
   });
 
@@ -124,7 +124,7 @@ describe("hydration", () => {
     const recipe = compute(bread)._unsafeUnwrap();
     expect(hydration(recipe, bread.starter.hydration)).toBeCloseTo(
       bread.hydration,
-      5
+      5,
     );
   });
 });
@@ -142,7 +142,7 @@ describe("starter percentage", () => {
     expect(recipe.starter.name).toEqual(bread.starter.name);
     expect(starterPerc(recipe, bread.starter.hydration)).toBeCloseTo(
       bread.starterPerc,
-      5
+      5,
     );
   });
 });
@@ -156,7 +156,7 @@ describe("salt percentage", () => {
     const recipe = compute(bread)._unsafeUnwrap();
     expect(saltPerc(recipe, bread.starter.hydration)).toBeCloseTo(
       bread.saltPerc,
-      5
+      5,
     );
   });
 });
@@ -171,11 +171,11 @@ describe("flour amounts", () => {
     const recipe = compute(bread)._unsafeUnwrap();
     expect(flourAmout(recipe, bread.starter.hydration, 1)).toBeCloseTo(
       bread.flours[0].amount,
-      5
+      5,
     );
     expect(flourAmout(recipe, bread.starter.hydration, 2)).toBeCloseTo(
       bread.flours[1].amount,
-      5
+      5,
     );
   });
 });

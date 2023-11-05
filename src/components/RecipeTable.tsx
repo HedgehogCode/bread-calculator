@@ -14,12 +14,15 @@ interface RecipeTableProps {
   recipe: Recipe;
 }
 
+const renderWeight = (value: number) => {
+  return `${(Math.round(value * 10) / 10).toFixed(1)} g`;
+};
+
 export default function RecipeTable({ recipe }: RecipeTableProps) {
-  // return <span>{JSON.stringify(props.recipe)}</span>;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="recipe">
-        <TableHead>
+        <TableHead data-testid="table-head">
           <TableRow>
             <TableCell>Ingredient</TableCell>
             <TableCell>Amount</TableCell>
@@ -28,30 +31,29 @@ export default function RecipeTable({ recipe }: RecipeTableProps) {
         <TableBody>
           <TableRow>
             <TableCell>Water</TableCell>
-            <TableCell>{recipe.water.toFixed(1)} g</TableCell>
+            <TableCell>{renderWeight(recipe.water)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Salt</TableCell>
-            <TableCell>{recipe.salt.toFixed(1)} g</TableCell>
+            <TableCell>{renderWeight(recipe.salt)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Starter - {recipe.starter.name}</TableCell>
-            <TableCell>{recipe.starter.amount.toFixed(1)} g</TableCell>
+            <TableCell>{renderWeight(recipe.starter.amount)}</TableCell>
           </TableRow>
           {recipe.gluten ? (
             <TableRow>
               <TableCell>Gluten</TableCell>
-              <TableCell>{recipe.gluten.toFixed(1)} g</TableCell>
+              <TableCell>{renderWeight(recipe.gluten)}</TableCell>
             </TableRow>
           ) : (
             <></>
           )}
           {recipe.flour.map((flour) => {
             return (
-              // TODO make sure the name is always unique
               <TableRow key={flour.name}>
                 <TableCell>Flour - {flour.name}</TableCell>
-                <TableCell>{flour.amount.toFixed(1)} g</TableCell>
+                <TableCell>{renderWeight(flour.amount)}</TableCell>
               </TableRow>
             );
           })}
